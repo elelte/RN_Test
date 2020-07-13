@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 //Module
 import POP from './Modal/ModalSort';
+import Ext from './Helper/Extension';
 
 export default class ViewList extends Component{
 
@@ -24,12 +25,12 @@ export default class ViewList extends Component{
 
             //Search
             searchText: "",
+            sort: "URUTKAN",
             dataFilter: []
         }
     }
 
     componentDidMount(){
-        console.log('mounted!');
         fetch('https://nextar.flip.id/frontend-test')
         .then((response) => response.json())
         .then((responseJson) => {
@@ -46,15 +47,16 @@ export default class ViewList extends Component{
         })
     }
 
+    //Fetch API
     render(){
         let {dataJson, isLoading, dataFilter} = this.state
         return (
         <View style={style_list.container}>
             <View style={style_list.view_header}>
                 <Icon name="ios-search" style={{ fontSize: 20 }} />
-                <TextInput placeholder="Search" style={{ fontSize: 20, marginLeft: 15, width: 200 }} onChangeText={this.search}
+                <TextInput placeholder="Search Name" style={{ fontSize: 20, marginLeft: 15, width: 200 }} onChangeText={this.search}
   value={this.state.searchText}/>
-                <Button title="Urutkan" style={{ marginLeft: 16 }} onPress={ () => this.refs.pop._showModal() }/>
+                <Button title={this.state.sort} style={{ marginLeft: 16 }} onPress={ () => this.refs.pop._showModal() }/>
             </View>
             
             <FlatList
@@ -64,7 +66,7 @@ export default class ViewList extends Component{
                 keyExtractor={(item, index) => index.toString()}
             />
 
-            <POP ref={'pop'}/>
+            <POP ref={'pop'} parent={this} />
 
 
         </View>
@@ -79,7 +81,7 @@ export default class ViewList extends Component{
                     <View style={{flex: 0.6, padding:8, flexDirection: 'column'}}>
                         <Text style={{fontWeight: "bold", fontSize: 18}}>{item.sender_bank} > {item.beneficiary_bank}</Text>
                         <Text style={{fontWeight: '600'}}>{[(item.status=='SUCCESS') ? "" : "- "]}{item.beneficiary_name.toUpperCase()} </Text>
-                        <Text style={{fontWeight: '600'}}>{"Rp" + item.amount + " " + item.created_at} </Text>
+                        <Text style={{fontWeight: '600'}}>{"Rp" + Ext.CURRENCY_FORMAT(item.amount) + " | " + Ext.DATE_FORMAT(item.created_at)} </Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -89,7 +91,7 @@ export default class ViewList extends Component{
     //DidSelect Item
     _didSelect(item) {
         console.log('Selected Item :',item);
-        this.props.navigation.push('Detail');
+        this.props.navigation.push('Detail', {'data': item});
     }
 
     //TextChanged
@@ -98,9 +100,17 @@ export default class ViewList extends Component{
         let filteredData = this.state.dataJson.filter(function (item) {
           return item.beneficiary_name.toLowerCase().match(searchText.toLowerCase())
         });
-        console.log(filteredData);
         this.setState({dataFilter: filteredData});
-      };
+    };
+
+    //Refresh
+    searchByFilter = (dt, srt) => {
+        this.setState({
+            searchText: "",
+            sort: srt,
+            dataFilter: dt
+        });
+    }
 }
 
 const style_list = StyleSheet.create({
