@@ -27,43 +27,47 @@ export default class ViewDetail extends Component {
                         DETAIL TRANSAKSI
                     </Text>
                 </View>
-                <View style={style_detail.row}>
-                    <View style={{width: '50%'}}>
-                        <Text style={style_detail.text_bold}>
-                            {data.sender_bank} > {data.beneficiary_bank}
-                        </Text>
-                        <Text style={style_detail.text_bold_margin}>
-                            {data.beneficiary_name}
-                        </Text>
-                        <Text style={style_detail.text_regular}>
-                            {data.account_number}
-                        </Text>
-                        <Text style={style_detail.text_bold_margin}>
-                            BERITA TRANSFER
-                        </Text>
-                        <Text style={style_detail.text_regular}>
-                            {data.remark}
-                        </Text>
-                        <Text style={style_detail.text_bold_margin}>
-                            WAKTU DIBUAT
-                        </Text>
-                        <Text style={style_detail.text_regular}>
-                            {Ext.DATE_FORMAT(data.created_at)}
-                        </Text>
-                        <Text style={style_detail.text_bold_margin}>
-                            NOMINAL
-                        </Text>
-                        <Text style={style_detail.text_regular}>
-                            {"Rp" + Ext.CURRENCY_FORMAT(data.amount)}
-                        </Text>
-                        <Text style={style_detail.text_bold_margin}>
-                            KODE UNIK
-                        </Text>
-                        <Text style={style_detail.text_regular}>
-                            {data.unique_code}
-                        </Text>
-                    </View>
+                 <View style={{flex: 1, borderColor: 'white', borderWidth: 15}}>
+                     <Text style={style_detail.text_bold}>
+                        {data.sender_bank} > {data.beneficiary_bank}
+                    </Text>
+                    <View style={{flexDirection: 'row', flex: 1}}>
+                        <View style={{flex: 0.5, backgroundColor: 'white'}}>
+                            <Text style={style_detail.text_bold_margin}>
+                                {data.beneficiary_name}
+                            </Text>
+                            <Text style={style_detail.text_regular}>
+                                {data.account_number}
+                            </Text>
+                            <Text style={style_detail.text_bold_margin}>
+                                BERITA TRANSFER
+                            </Text>
+                            <Text style={style_detail.text_regular}>
+                                {data.remark}r
+                            </Text>
+                            <Text style={style_detail.text_bold_margin}>
+                                WAKTU DIBUAT
+                            </Text>
+                            <Text style={style_detail.text_regular}>
+                                {Ext.DATE_FORMAT(data.created_at)}
+                            </Text>
+                        </View>    
 
+                        <View style={{flex: 0.5, backgroundColor: 'white'}}>
+                            <Text style={style_detail.text_bold_margin}>
+                                NOMINAL
+                            </Text>
+                            <Text style={style_detail.text_regular}>
+                                {"Rp" + Ext.CURRENCY_FORMAT(data.amount)}
+                            </Text>
+                            <Text style={style_detail.text_bold_margin}>
+                                KODE UNIK
+                            </Text>
+                            <Text style={style_detail.text_regular}>
+                                {data.unique_code}
+                            </Text>
+                        </View>   
+                    </View>
 
                 </View>
             </View>
